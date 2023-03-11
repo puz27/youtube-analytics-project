@@ -6,9 +6,9 @@ from googleapiclient.discovery import build
 
 import isodate
 
-# ИСПРАВЛЕНО
 # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
-api_key: str = os.getenv('API_KEY')
+api_key: str = "AIzaSyD5Io-QHITvbWlQuG_NhmVOrVNBKl0F6o0"
+#api_key: str = os.getenv('API_KEY')
 
 # создать специальный объект для работы с API
 youtube = build('youtube', 'v3', developerKey=api_key)
@@ -25,11 +25,33 @@ docs: https://developers.google.com/youtube/v3/docs/channels/list
 
 сервис для быстрого получения id канала: https://commentpicker.com/youtube-channel-id.php
 '''
-# ИСПРАВЛЕНО
+
 channel_id = 'UCMCgOm8GZkHp8zJ6l7_hIuA'  # вДудь
+
+
 def print_info(channel_id):
     channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
     return printj(channel)
+
+
+def get_chanel(channel_id) -> dict:
+    channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
+    return channel["items"][0]
+
+
+def get_info_about_chanel(channel_id):
+
+    formated_dictionary = get_chanel(channel_id)
+
+    id_chanel = formated_dictionary["id"]
+    title_chanel = formated_dictionary["snippet"]["title"]
+    description_chanel = formated_dictionary["snippet"]["description"]
+    url_chanel = "https://www.youtube.com/channel/" + "UCMCgOm8GZkHp8zJ6l7_hIuA"
+    subscriberCount_chanel = formated_dictionary["statistics"]["subscriberCount"]
+    videoCount_chanel = formated_dictionary["statistics"]["videoCount"]
+    viewCount_chanel = formated_dictionary["statistics"]["viewCount"]
+    return id_chanel, title_chanel, description_chanel, url_chanel, subscriberCount_chanel,\
+        videoCount_chanel, viewCount_chanel
 
 
 # '''
