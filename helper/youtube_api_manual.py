@@ -1,7 +1,6 @@
 import json
 import isodate
 import os
-
 # необходимо установить через: pip install google-api-python-client
 from googleapiclient.discovery import build
 
@@ -11,9 +10,11 @@ api_key: str = os.getenv('API_KEY')
 # создать специальный объект для работы с API
 youtube = build('youtube', 'v3', developerKey=api_key)
 
+
 def printj(dict_to_print: dict) -> None:
     """Выводит словарь в json-подобном удобном формате с отступами"""
     print(json.dumps(dict_to_print, indent=2, ensure_ascii=False))
+
 
 '''
 получить данные о канале по его id
@@ -21,32 +22,7 @@ docs: https://developers.google.com/youtube/v3/docs/channels/list
 сервис для быстрого получения id канала: https://commentpicker.com/youtube-channel-id.php
 '''
 # работает с этим каналом
-# вДудь
 channel_id = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
-
-def print_info(channel_id: str) -> print():
-    """возвращаем информацию о канале"""
-    channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
-    return printj(channel)
-
-def get_chanel(channel_id: str) -> dict:
-    """возвращаем информацию о канале в виде словаря"""
-    channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
-    return channel["items"][0]
-
-def get_info_about_chanel(channel_id: str) -> tuple:
-    """получаем 7 нужных нам данных о канале"""
-    formated_dictionary = get_chanel(channel_id)
-    id_chanel = formated_dictionary["id"]
-    title_chanel = formated_dictionary["snippet"]["title"]
-    description_chanel = formated_dictionary["snippet"]["description"]
-    url_chanel = "https://www.youtube.com/channel/" + "UCMCgOm8GZkHp8zJ6l7_hIuA"
-    subscriberCount_chanel = formated_dictionary["statistics"]["subscriberCount"]
-    videoCount_chanel = formated_dictionary["statistics"]["videoCount"]
-    viewCount_chanel = formated_dictionary["statistics"]["viewCount"]
-    return id_chanel, title_chanel, description_chanel, url_chanel, subscriberCount_chanel,\
-        videoCount_chanel, viewCount_chanel
-
 
 # '''
 # получить данные по play-листам канала
