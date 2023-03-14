@@ -67,3 +67,28 @@ class Channel:
 
         with open(path_file_statistic, "w") as outfile:
             outfile.write(json_object)
+
+    def __repr__(self):
+        return f"{self.__title} ({self.__url})"
+
+    def __add__(self, other):
+        return int(self.subscriberCount_chanel) + int(other.subscriberCount_chanel)
+
+    def __sub__(self, other):
+        return int(self.subscriberCount_chanel) - int(other.subscriberCount_chanel)
+
+    def __le__(self, other):
+        if not isinstance(other, Channel):
+            raise TypeError("Должны сравнивать экземпляры класса Channel")
+        return int(self.subscriberCount_chanel) <= int(other.subscriberCount_chanel)
+
+    def __lt__(self, other):
+        if not isinstance(other, Channel):
+            raise TypeError("Должны сравнивать экземпляры класса Channel")
+        return int(self.subscriberCount_chanel) < int(other.subscriberCount_chanel)
+
+    def __eq__(self, other):
+        if not isinstance(other, Channel):
+            raise TypeError("Должны сравнивать экземпляры класса Channel")
+        return int(self.subscriberCount_chanel) == int(other.subscriberCount_chanel)
+
