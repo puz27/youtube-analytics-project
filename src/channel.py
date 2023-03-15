@@ -91,4 +91,3 @@ class Channel:
         if not isinstance(other, Channel):
             raise TypeError("Должны сравнивать экземпляры класса Channel")
         return int(self.subscriberCount_chanel) == int(other.subscriberCount_chanel)
-
