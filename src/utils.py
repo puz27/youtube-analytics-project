@@ -19,7 +19,7 @@ def get_info_about_chanel(channel_id: str) -> tuple:
     id_chanel = formated_dictionary["id"]
     title_chanel = formated_dictionary["snippet"]["title"]
     description_chanel = formated_dictionary["snippet"]["description"]
-    url_chanel = "https://www.youtube.com/channel/" + "UCMCgOm8GZkHp8zJ6l7_hIuA"
+    url_chanel = "https://www.youtube.com/channel/" + channel_id
     subscriberCount_chanel = formated_dictionary["statistics"]["subscriberCount"]
     videoCount_chanel = formated_dictionary["statistics"]["videoCount"]
     viewCount_chanel = formated_dictionary["statistics"]["viewCount"]

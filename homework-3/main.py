@@ -7,6 +7,7 @@ if __name__ == '__main__':
 
     # Используем различные магические методы
     print(vdud)  # 'вДудь (https://www.youtube.com/channel/UCMCgOm8GZkHp8zJ6l7_hIuA)'
+    print(redactsiya)
 
     print(vdud + redactsiya)  # 13970000
     print(vdud - redactsiya)  # 6630000
