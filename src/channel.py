@@ -42,7 +42,7 @@ class Channel:
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        print_info(self.channel_id)
+        print_info(self.__channel_id)
 
     @staticmethod
     def get_service() -> str:
