@@ -23,5 +23,36 @@ def get_info_about_chanel(channel_id: str) -> tuple:
     subscriberCount_chanel = formated_dictionary["statistics"]["subscriberCount"]
     videoCount_chanel = formated_dictionary["statistics"]["videoCount"]
     viewCount_chanel = formated_dictionary["statistics"]["viewCount"]
+
     return id_chanel, title_chanel, description_chanel, url_chanel, subscriberCount_chanel,\
         videoCount_chanel, viewCount_chanel
+
+
+def get_video_statistic(video_id: str) -> tuple:
+    """возвращаем информацию о видео. название, колличество, url, колличество лайков и коментариев"""
+    video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                           id=video_id
+                                           ).execute()
+
+    video_title = video_response['items'][0]['snippet']['title']
+    view_count = video_response['items'][0]['statistics']['viewCount']
+    video_url = "https://youtu.be/" + video_id
+    like_count = video_response['items'][0]['statistics']['likeCount']
+    comment_count = video_response['items'][0]['statistics']['commentCount']
+
+    return video_title, view_count, video_url, like_count, comment_count
+
+
+def get_video_statistic_by_playlist_id(video_id: str, playlist_id: str) -> tuple or None:
+    """возвращаем информацию о видео. название, колличество, url,
+    колличество лайков и коментариев используя id плэйлиста и видео
+    """
+    playlist_response = youtube.playlistItems().list(playlistId=playlist_id,
+                                                     part='contentDetails',
+                                                     maxResults=50,
+                                                     ).execute()
+
+    video_ids = [video['contentDetails']['videoId'] for video in playlist_response['items']]
+    if video_id in video_ids:
+        return get_video_statistic(video_id)
+    return None
