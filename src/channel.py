@@ -37,7 +37,7 @@ class Channel:
         return self.__title
 
     @property
-    def channel_id(self)  -> str:
+    def channel_id(self) -> str:
         return self.__channel_id
 
     def print_info(self) -> None:
