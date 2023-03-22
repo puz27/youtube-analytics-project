@@ -56,3 +56,33 @@ def get_video_statistic_by_playlist_id(video_id: str, playlist_id: str) -> tuple
     if video_id in video_ids:
         return get_video_statistic(video_id)
     return None
+
+
+def get_playlist_info(playlist_id: str) -> tuple:
+    """По ID плэйлиста получаем описание плэйлиста и ссылку"""
+    playlist_url = "https://www.youtube.com/playlist?list=" + playlist_id
+    playlist_title = ""
+    # достать id канала из плэйлиста
+    chanel_id_response = youtube.playlistItems().list(playlistId=playlist_id,
+                                                      part='snippet',
+                                                      maxResults=50
+                                                      ).execute()
+
+    channel_id = chanel_id_response["items"][0]["snippet"]["channelId"]
+
+    # по id канала можно узнать описание нужного плэйлиста
+    playlist_title_response = youtube.playlists().list(channelId=channel_id,
+                                                       part='contentDetails,snippet',
+                                                       maxResults=50,
+                                                       ).execute()
+
+    for playlist in playlist_title_response['items']:
+        if playlist["id"] == playlist_id:
+            playlist_title = playlist["snippet"]["title"]
+            break
+        else:
+            playlist_title = None
+    return playlist_url,  playlist_title
+
+# playlist_id = "PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb"
+# print(get_playlist_info(playlist_id))
