@@ -1,4 +1,6 @@
 from helper.youtube_api_manual import youtube, printj
+import isodate
+
 
 
 def print_info(channel_id: str) -> print():
@@ -84,5 +86,78 @@ def get_playlist_info(playlist_id: str) -> tuple:
             playlist_title = None
     return playlist_url,  playlist_title
 
+
+def convert_time(time_seconds: float) -> str:
+    "Конвертирует секунды в формат чч:мм:сс"
+    hours = str(int(time_seconds // 3600))
+    minutes = str(int((time_seconds % 3600) // 60))
+    seconds = str(int((time_seconds % 3600) % 60))
+    return f"{hours}:{minutes.rjust(2, '0')}:{seconds.rjust(2, '0')}"
+
+
+def get_duration_all_videos(playlist_id: str):
+    """Получаем длительность всех видео плэйлиста"""
+    playlist_videos = youtube.playlistItems().list(playlistId=playlist_id,
+                                                   part='contentDetails',
+                                                   maxResults=50,
+                                                   ).execute()
+
+    video_ids = [video['contentDetails']['videoId'] for video in playlist_videos['items']]
+    video_response = youtube.videos().list(part='contentDetails,statistics',
+                                           id=','.join(video_ids)
+                                           ).execute()
+
+    total_duration = 0
+    for video in video_response['items']:
+        # YouTube video duration is in ISO 8601 format
+        iso_8601_duration = video['contentDetails']['duration']
+        duration = isodate.parse_duration(iso_8601_duration)
+        # total_duration += duration.total_seconds()
+
+    return duration
+    # return convert_time(total_duration)
+
+
+
+
+playlist_id = "PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb"
+z = get_duration_all_videos(playlist_id)
+print(type(z))
+
+
+
+
+
+
 # playlist_id = "PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb"
-# print(get_playlist_info(playlist_id))
+# playlist_response = youtube.playlistItems().list(playlistId=playlist_id,
+#                                                      part='contentDetails',
+#                                                      maxResults=50,
+#                                                      ).execute()
+#
+# video_ids = [video['contentDetails']['videoId'] for video in playlist_response['items']]
+#     # if video_id in video_ids:
+#     #     return get_video_statistic(video_id)
+# # printj(video_ids)
+#
+# video_id = "4jRSy-_CLFg"
+# video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+#                                        id=video_id
+#                                        ).execute()
+# printj(video_response)
+# video_title: str = video_response['items'][0]['snippet']['title']
+# view_count: int = video_response['items'][0]['statistics']['viewCount']
+# like_count: int = video_response['items'][0]['statistics']['likeCount']
+# comment_count: int = video_response['items'][0]['statistics']['commentCount']
+
+
+
+
+
+
+
+# print(get_duration_all_videos("PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb"))
+
+
+
+
