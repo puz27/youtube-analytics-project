@@ -1,4 +1,4 @@
-from src.utils import get_playlist_info, get_duration_all_videos
+from src.utils import get_playlist_info, get_duration_all_videos, get_best_video
 import datetime
 
 
@@ -11,10 +11,12 @@ class PlayList:
 
     @property
     def total_duration(self):
+        print(self.__total_duration)
+        print((type(self.__total_duration)))
         return self.__total_duration
 
     def show_best_video(self):
-        pass
+        return get_best_video(self.playlist_id)
 
     def __str__(self):
         return f"{self.__total_duration}"
