@@ -11,8 +11,6 @@ class PlayList:
 
     @property
     def total_duration(self):
-        print(self.__total_duration)
-        print((type(self.__total_duration)))
         return self.__total_duration
 
     def show_best_video(self):

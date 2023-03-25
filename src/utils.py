@@ -4,21 +4,20 @@ from helper.youtube_api_manual import youtube, printj
 import isodate
 
 
-
 def print_info(channel_id: str) -> print():
-    """возвращаем информацию о канале"""
+    """Возвращает информацию о канале"""
     channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
     return printj(channel)
 
 
 def get_chanel(channel_id: str) -> dict:
-    """возвращаем информацию о канале в виде словаря"""
+    """Возвращает информацию о канале в виде словаря"""
     channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
     return channel["items"][0]
 
 
 def get_info_about_chanel(channel_id: str) -> tuple:
-    """получаем 7 нужных нам данных о канале"""
+    """Получаем 7 нужных нам данных о канале"""
     formated_dictionary = get_chanel(channel_id)
     id_chanel = formated_dictionary["id"]
     title_chanel = formated_dictionary["snippet"]["title"]
@@ -33,7 +32,7 @@ def get_info_about_chanel(channel_id: str) -> tuple:
 
 
 def get_video_statistic(video_id: str) -> tuple:
-    """возвращаем информацию о видео. название, колличество, url, колличество лайков и коментариев"""
+    """Возвращает информацию о видео. название, колличество, url, колличество лайков и коментариев"""
     video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                            id=video_id
                                            ).execute()
@@ -48,7 +47,7 @@ def get_video_statistic(video_id: str) -> tuple:
 
 
 def get_video_statistic_by_playlist_id(video_id: str, playlist_id: str) -> tuple or None:
-    """возвращаем информацию о видео. название, колличество, url,
+    """Возвращает информацию о видео. название, колличество, url,
     колличество лайков и коментариев используя id плэйлиста и видео
     """
     playlist_response = youtube.playlistItems().list(playlistId=playlist_id,
@@ -66,7 +65,7 @@ def get_playlist_info(playlist_id: str) -> tuple:
     """По ID плэйлиста получаем описание плэйлиста и ссылку"""
     playlist_url = "https://www.youtube.com/playlist?list=" + playlist_id
     playlist_title = ""
-    # достать id канала из плэйлиста
+    # достать id канала из плейлиста
     chanel_id_response = youtube.playlistItems().list(playlistId=playlist_id,
                                                       part='snippet',
                                                       maxResults=50
@@ -74,7 +73,7 @@ def get_playlist_info(playlist_id: str) -> tuple:
 
     channel_id = chanel_id_response["items"][0]["snippet"]["channelId"]
 
-    # по id канала можно узнать описание нужного плэйлиста
+    # по id канала можно узнать описание нужного плейлиста
     playlist_title_response = youtube.playlists().list(channelId=channel_id,
                                                        part='contentDetails,snippet',
                                                        maxResults=50,
@@ -93,9 +92,9 @@ def get_best_video(playlist_id: str) -> str:
     """Возвращает самое популярное видео плейлиста по количеству лайков"""
     url_best_video = "Нет информации"
     playlist_response = youtube.playlistItems().list(playlistId=playlist_id,
-                                                         part='contentDetails',
-                                                         maxResults=50,
-                                                         ).execute()
+                                                     part='contentDetails',
+                                                     maxResults=50,
+                                                     ).execute()
     best_like = 0
     for video in playlist_response['items']:
         video_id = video['contentDetails']['videoId']
@@ -108,6 +107,7 @@ def get_best_video(playlist_id: str) -> str:
             url_best_video = get_video_statistic(video_id)[2]
 
     return url_best_video
+
 
 def get_duration_all_videos(playlist_id: str):
     """Получаем длительность всех видео плэйлиста"""
@@ -129,22 +129,3 @@ def get_duration_all_videos(playlist_id: str):
         total_duration += duration
 
     return total_duration
-
-
-
-
-# playlist_id = "PLguYHBi01DWr4bRWc4uaguASmo7lW4GCb"
-# z = get_duration_all_videos(playlist_id)
-# print(z)
-# print(type(z))
-
-
-
-
-
-
-
-
-
-
-
