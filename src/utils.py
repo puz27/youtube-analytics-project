@@ -1,5 +1,4 @@
 import datetime
-
 from helper.youtube_api_manual import youtube, printj
 import isodate
 
@@ -33,17 +32,20 @@ def get_info_about_chanel(channel_id: str) -> tuple:
 
 def get_video_statistic(video_id: str) -> tuple:
     """Возвращает информацию о видео. название, колличество, url, колличество лайков и коментариев"""
-    video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                           id=video_id
-                                           ).execute()
+    try:
+        video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                               id=video_id
+                                               ).execute()
 
-    video_title = video_response['items'][0]['snippet']['title']
-    view_count = video_response['items'][0]['statistics']['viewCount']
-    video_url = "https://youtu.be/" + video_id
-    like_count = video_response['items'][0]['statistics']['likeCount']
-    comment_count = video_response['items'][0]['statistics']['commentCount']
+        video_title = video_response['items'][0]['snippet']['title']
+        view_count = video_response['items'][0]['statistics']['viewCount']
+        video_url = "https://youtu.be/" + video_id
+        like_count = video_response['items'][0]['statistics']['likeCount']
+        comment_count = video_response['items'][0]['statistics']['commentCount']
+        return video_title, view_count, video_url, like_count, comment_count
 
-    return video_title, view_count, video_url, like_count, comment_count
+    except IndexError:
+        return (None,) * 5
 
 
 def get_video_statistic_by_playlist_id(video_id: str, playlist_id: str) -> tuple or None:
