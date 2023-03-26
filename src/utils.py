@@ -111,7 +111,7 @@ def get_best_video(playlist_id: str) -> str:
     return url_best_video
 
 
-def get_duration_all_videos(playlist_id: str):
+def get_duration_all_videos(playlist_id: str) -> datetime.timedelta:
     """Получаем длительность всех видео плэйлиста"""
     playlist_videos = youtube.playlistItems().list(playlistId=playlist_id,
                                                    part='contentDetails',
